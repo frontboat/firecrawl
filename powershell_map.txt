@@ -1,0 +1,7 @@
+Powershell Map
+
+{
+  "url": "https://learn.microsoft.com/en-us/powershell/scripting/samples/sample-scripts-for-administration",
+  "limit": 50
+}
+

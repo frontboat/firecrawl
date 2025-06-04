@@ -1,0 +1,449 @@
+Intune scrape
+
+{
+  "url": "https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/deployment-guide-enrollment-android",
+  "formats": [
+    "markdown"
+  ],
+  "onlyMainContent": true
+}
+
+Table of contents Exit focus mode
+
+Ask LearnAsk Learn
+
+Table of contents[Read in English](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/deployment-guide-enrollment-android)Add to CollectionsAdd to plan[Edit](https://github.com/MicrosoftDocs/memdocs/blob/main/intune/intune-service/fundamentals/deployment-guide-enrollment-android.md)
+
+* * *
+
+#### Share via
+
+[Facebook](https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Flearn.microsoft.com%2Fen-us%2Fintune%2Fintune-service%2Ffundamentals%2Fdeployment-guide-enrollment-android%3FWT.mc_id%3Dfacebook) [x.com](https://twitter.com/intent/tweet?original_referer=https%3A%2F%2Flearn.microsoft.com%2Fen-us%2Fintune%2Fintune-service%2Ffundamentals%2Fdeployment-guide-enrollment-android%3FWT.mc_id%3Dtwitter&text=%0A%0D%0Ahttps%3A%2F%2Flearn.microsoft.com%2Fen-us%2Fintune%2Fintune-service%2Ffundamentals%2Fdeployment-guide-enrollment-android%3FWT.mc_id%3Dtwitter&tw_p=tweetbutton&url=https%3A%2F%2Flearn.microsoft.com%2Fen-us%2Fintune%2Fintune-service%2Ffundamentals%2Fdeployment-guide-enrollment-android%3FWT.mc_id%3Dtwitter) [LinkedIn](https://www.linkedin.com/feed/?shareActive=true&text=%0A%0D%0Ahttps%3A%2F%2Flearn.microsoft.com%2Fen-us%2Fintune%2Fintune-service%2Ffundamentals%2Fdeployment-guide-enrollment-android%3FWT.mc_id%3Dlinkedin) [Email](mailto:?subject=%5BShared%20Article%5D%20Android%20device%20enrollment%20guide%20for%20Microsoft%20Intune%20%7C%20Microsoft%20Learn&body=%0A%0D%0Ahttps%3A%2F%2Flearn.microsoft.com%2Fen-us%2Fintune%2Fintune-service%2Ffundamentals%2Fdeployment-guide-enrollment-android%3FWT.mc_id%3Demail)
+
+* * *
+
+Print
+
+* * *
+
+Note
+
+Access to this page requires authorization. You can try [signing in](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/deployment-guide-enrollment-android#) or changing directories.
+
+
+Access to this page requires authorization. You can try changing directories.
+
+
+# Enrollment guide: Enroll Android devices in Microsoft Intune
+
+- 03/03/2025
+
+Feedback
+
+Personal and organization-owned devices can be enrolled in Intune. Once enrolled, they receive the policies and profiles you create. You have the following options when enrolling Android devices:
+
+- [BYOD: Android Enterprise personally owned devices with a work profile](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/deployment-guide-enrollment-android#byod-android-enterprise-personally-owned-devices-with-a-work-profile)
+- [Android Enterprise corporate owned dedicated devices](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/deployment-guide-enrollment-android#android-enterprise-dedicated-devices) (COSU)
+- [Android Enterprise corporate owned fully managed](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/deployment-guide-enrollment-android#android-enterprise-fully-managed) (COBO)
+- [Android Enterprise corporate owned work profile](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/deployment-guide-enrollment-android#android-enterprise-corporate-owned-work-profile) (COPE)
+- [Android Open Source Project (AOSP)](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/deployment-guide-enrollment-android#android-open-source-project-aosp)
+- [Android device administrator](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/deployment-guide-enrollment-android#android-device-administrator) (DA)
+
+This article provides enrollment recommendations and includes an overview of the administrator and user tasks for each option.
+
+There's also a visual guide of the different enrollment options for each platform:
+
+[![A visual representation of Intune enrollment options by platform](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/media/deployment-guide-enrollment/msft-intune-enrollment-options-thumb-landscape.png)](https://download.microsoft.com/download/e/6/2/e6233fdd-a956-4f77-93a5-1aa254ee2917/msft-intune-enrollment-options.pdf)
+
+[Download PDF version](https://download.microsoft.com/download/e/6/2/e6233fdd-a956-4f77-93a5-1aa254ee2917/msft-intune-enrollment-options.pdf) \| [Download Visio version](https://download.microsoft.com/download/e/6/2/e6233fdd-a956-4f77-93a5-1aa254ee2917/msft-intune-enrollment-options.vsdx)
+
+Tip
+
+This guide is a living thing. So, be sure to add or update existing tips and guidance you've found helpful.
+
+[Section titled: Before you begin](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/deployment-guide-enrollment-android#before-you-begin)
+
+## Before you begin
+
+For a list of all the Intune-specific prerequisites and configurations needed to prepare your tenant for enrollment, go to [Enrollment guide: Microsoft Intune enrollment](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/deployment-guide-enrollment).
+
+Note
+
+After you create an enrollment profile and assign it to users or groups, don't rename the enrollment profile. It can prevent future enrollments. If you need to change the name of the enrollment profile, then:
+
+1. Create a new enrollment profile with the new name
+2. Assign the new profile to the your users & devices
+3. Delete the old profile
+
+[Section titled: BYOD: Android Enterprise personally owned devices with a work profile](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/deployment-guide-enrollment-android#byod-android-enterprise-personally-owned-devices-with-a-work-profile)
+
+## BYOD: Android Enterprise personally owned devices with a work profile
+
+These devices are personal or BYOD (bring your own device) Android devices that access organization email, apps, and other data.
+
+* * *
+
+Expand table
+
+| Feature | Use this enrollment option when |
+| --- | --- |
+| Use Google Mobile Services (GMS). | ✅ |
+| Devices are personal or BYOD. | ✅ <br> You can mark these devices as corporate or personal. |
+| You have new or existing devices. | ✅ |
+| Need to enroll a few devices, or a large number of devices (bulk enrollment). | ✅ |
+| Devices are associated with a single user. | ✅ |
+| You use the optional device enrollment manager (DEM) account. | ✅ |
+| Devices are managed by another MDM provider. | ❌ <br> When a device enrolls, MDM providers install certificates and other files. These files must be removed. The quickest way might be to unenroll, or factory reset the devices. If you don't want to factory reset, then contact the other MDM provider for guidance. |
+| Devices are owned by the organization or school. | ❌ <br>Not recommended for organization-owned devices. Organization-owned devices should be enrolled using [Android Enterprise fully managed](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/deployment-guide-enrollment-android#android-enterprise-fully-managed) (in this article), or using [Android Enterprise corporate owned work profile](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/deployment-guide-enrollment-android#android-enterprise-corporate-owned-work-profile) (in this article). |
+| Devices are user-less, such as kiosk, dedicated, or shared. | ❌ <br> User-less or shared devices should be organization-owned. These devices should be enrolled using Android Enterprise dedicated devices. |
+
+* * *
+
+[Section titled: Admin tasks (personally owned devices with a work profile)](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/deployment-guide-enrollment-android#admin-tasks-personally-owned-devices-with-a-work-profile)
+
+### Admin tasks (personally owned devices with a work profile)
+
+This task list provides an overview. For more specific information, go to [Set up enrollment of Android Enterprise personally owned work profile devices](https://learn.microsoft.com/en-us/intune/intune-service/enrollment/android-work-profile-enroll).
+
+- Be sure your devices are [supported based on platform](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/supported-devices-browsers). For AOSP devices, go to [Android Open Source Project Supported Devices](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/android-os-project-supported-devices).
+- Connect your Intune organization account to your Managed Google Play account in the [Intune admin center](https://go.microsoft.com/fwlink/?linkid=2109431). When you connect, Intune automatically adds the Company Portal app and other common Android Enterprise apps to the devices. For the specific steps, go to [Connect your Intune account to your Managed Google Play account](https://learn.microsoft.com/en-us/intune/intune-service/enrollment/connect-intune-android-enterprise).
+
+[Section titled: End user tasks (personally owned devices with a work profile)](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/deployment-guide-enrollment-android#end-user-tasks-personally-owned-devices-with-a-work-profile)
+
+### End user tasks (personally owned devices with a work profile)
+
+Your users must do the following steps. For the specific user experience, go to [enroll the device](https://learn.microsoft.com/en-us/intune/intune-service/user-help/enroll-device-android-work-profile).
+
+1. Go to the Google Play store, and install the [Company Portal app](https://play.google.com/store/apps/details?id=com.microsoft.windowsintune.companyportal).
+
+2. Users open the Company Portal app, and sign in with their organization credentials ( `user@contoso.com`). After they sign in, your enrollment profile applies to the device.
+
+Users might have to enter more information. For more specific steps, go to [enroll the device](https://learn.microsoft.com/en-us/intune/intune-service/user-help/enroll-device-android-work-profile).
+
+
+Users typically don't like enrolling themselves, and may not be familiar with the Company Portal app. Be sure to provide guidance, including what information to enter. For some guidance on communicating with your users, see [Planning guide: Step 5 - Create a rollout plan](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/intune-planning-guide#step-5---create-a-rollout-plan).
+
+Tip
+
+There is a short, step-by-step video to help your users in enroll their devices in Intune:
+
+[Enroll your Android device](https://www.youtube.com/watch?v=9Dl8HsGk4tI&t=3s)
+
+[Section titled: Android Enterprise dedicated devices](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/deployment-guide-enrollment-android#android-enterprise-dedicated-devices)
+
+## Android Enterprise dedicated devices
+
+Previously referred to as COSU. These devices are organization-owned, and are supported by Google's Zero Touch. The only purpose is to be a kiosk-style device. They aren't associated with a single or specific user. These devices are commonly used to scan items, print tickets, get digital signatures, manage inventory, and more.
+
+* * *
+
+Expand table
+
+| Feature | Use this enrollment option when |
+| --- | --- |
+| Use Google Mobile Services (GMS). | ✅ |
+| Devices are owned by the organization or school. | ✅ |
+| You have new or existing devices. | ✅ |
+| Need to enroll a few devices, or a large number of devices (bulk enrollment). | ✅ |
+| Devices are user-less, such as kiosk, dedicated, or shared. | ✅ |
+| Devices are personal or BYOD. | ❌ <br>BYOD or personal devices should be enrolled using [Android Enterprise personally owned devices with a work profile](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/deployment-guide-enrollment-android#byod-android-enterprise-personally-owned-devices-with-a-work-profile) (in this article). |
+| Devices are associated with a single user. | ❌ <br> Not recommended. These devices should be enrolled using Android Enterprise fully managed. |
+| You use the optional device enrollment manager (DEM) account. | ❌ <br> The DEM account isn't supported. |
+| Devices are managed by another MDM provider. | ❌ <br> To be fully managed by Intune, users need to unenroll from the current MDM provider, and then enroll in Intune. |
+
+* * *
+
+[Section titled: Admin tasks (Dedicated devices)](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/deployment-guide-enrollment-android#admin-tasks-dedicated-devices)
+
+### Admin tasks (Dedicated devices)
+
+This task list provides an overview. For more specific information, go to [Set up Intune enrollment of Android Enterprise dedicated devices](https://learn.microsoft.com/en-us/intune/intune-service/enrollment/android-kiosk-enroll).
+
+- Be sure your devices are [supported](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/supported-devices-browsers).
+
+- Factory reset the devices. This step is required.
+
+- Connect your Intune organization account to your Managed Google Play account in the [Intune admin center](https://go.microsoft.com/fwlink/?linkid=2109431). When you connect, Intune automatically adds the Intune app and other common Android Enterprise apps to the devices. For the specific steps, go to [Connect your Intune account to your Managed Google Play account](https://learn.microsoft.com/en-us/intune/intune-service/enrollment/connect-intune-android-enterprise).
+
+- Create an enrollment profile in the [Intune admin center](https://go.microsoft.com/fwlink/?linkid=2109431), and have your dedicated device group ready to receive the profile. For the specific steps, go to [Set up Intune enrollment of Android Enterprise dedicated devices](https://learn.microsoft.com/en-us/intune/intune-service/enrollment/android-kiosk-enroll).
+
+- Enroll the devices in Intune. For the specific steps, go to [Enroll your Android Enterprise devices](https://learn.microsoft.com/en-us/intune/intune-service/enrollment/android-dedicated-devices-fully-managed-enroll).
+
+On Samsung's Knox devices, you can automatically enroll a large number of Android Enterprise devices using Samsung Knox Mobile Enrollment (KME). For more information, go to [Automatically enroll Android devices by using Samsung's Knox Mobile Enrollment](https://learn.microsoft.com/en-us/intune/intune-service/enrollment/android-samsung-knox-mobile-enroll).
+
+- Communicate to your users how they should enroll: Near Field Communication (NFC), Token, QR Code, Google Zero Touch, or Samsung Knox Mobile Enrollment (KME).
+
+
+[Section titled: End user tasks (Dedicated devices)](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/deployment-guide-enrollment-android#end-user-tasks-dedicated-devices)
+
+### End user tasks (Dedicated devices)
+
+Admins can complete the enrollment themselves, and then give the devices to the users. Or, users can enroll the devices using the following steps:
+
+1. Users turn on the device, and are prompted for information, including the enrollment method: NFC, Token, QR Code, or Google Zero Touch.
+2. After they enter the required information, your enrollment profile applies to the device. When the enrollment wizard completes, the device is ready to use.
+
+Users typically don't like enrolling themselves, and may not be familiar with the Company Portal app. Be sure to provide guidance, including what information to enter. For some guidance on communicating with your users, see [Planning guide: Step 5 - Create a rollout plan](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/intune-planning-guide#step-5---create-a-rollout-plan).
+
+[Section titled: Android Enterprise fully managed](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/deployment-guide-enrollment-android#android-enterprise-fully-managed)
+
+## Android Enterprise fully managed
+
+Previously referred to as COBO. These devices are organization-owned, and have one user. They're used exclusively for organization work; not personal use.
+
+* * *
+
+Expand table
+
+| Feature | Use this enrollment option when |
+| --- | --- |
+| Use Google Mobile Services (GMS). | ✅ |
+| Devices are owned by the organization or school. | ✅ |
+| You have new or existing devices. | ✅ |
+| Need to enroll a few devices, or a large number of devices (bulk enrollment). | ✅ |
+| Devices are associated with a single user. | ✅ |
+| Devices are user-less, such as kiosk, dedicated, or shared. | ❌ <br> User-less devices should be enrolled using [Android Enterprise dedicated devices](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/deployment-guide-enrollment-android#android-enterprise-dedicated-devices) (in this article). |
+| Devices are personal or BYOD. | ❌ <br>BYOD or personal devices should be enrolled using [Android Enterprise personally owned devices with a work profile](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/deployment-guide-enrollment-android#byod-android-enterprise-personally-owned-devices-with-a-work-profile) (in this article). |
+| Devices are managed by another MDM provider. | ❌ <br> To be fully managed by Intune, users need to unenroll from the current MDM provider, and then enroll in Intune. |
+| You use the optional device enrollment manager (DEM) account | ❌ <br> The DEM account isn't supported. |
+
+* * *
+
+[Section titled: Admin tasks (Fully managed)](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/deployment-guide-enrollment-android#admin-tasks-fully-managed)
+
+### Admin tasks (Fully managed)
+
+This task list provides an overview. For more specific information, go to [Set up Intune enrollment of Android Enterprise fully managed devices](https://learn.microsoft.com/en-us/intune/intune-service/enrollment/android-fully-managed-enroll).
+
+- Be sure your devices are [supported](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/supported-devices-browsers).
+
+- Factory reset the devices. This step is required.
+
+- Connect your Intune organization account to your Managed Google Play account in the [Intune admin center](https://go.microsoft.com/fwlink/?linkid=2109431). When you connect, Intune automatically adds the Company Portal app and other common Android Enterprise apps to the devices. For the specific steps, go to [Connect your Intune account to your Managed Google Play account](https://learn.microsoft.com/en-us/intune/intune-service/enrollment/connect-intune-android-enterprise).
+
+- Enable fully managed user devices in the [Intune admin center](https://go.microsoft.com/fwlink/?linkid=2109431). For the specific steps, go to [Set up Intune enrollment of Android Enterprise fully managed devices](https://learn.microsoft.com/en-us/intune/intune-service/enrollment/android-fully-managed-enroll).
+
+- Enroll the devices in Intune. For the specific steps, go to [Enroll your Android Enterprise devices](https://learn.microsoft.com/en-us/intune/intune-service/enrollment/android-dedicated-devices-fully-managed-enroll).
+
+- Communicate to your users how they should enroll: Near Field Communication (NFC), Token, QR Code, Google Zero Touch, or Samsung Knox Mobile Enrollment (KME).
+
+Using Samsung Knox Mobile Enrollment (KME), you can automatically enroll a large number of Android Enterprise Samsung Knox devices. For more information, go to [Automatically enroll Android devices by using Samsung's Knox Mobile Enrollment](https://learn.microsoft.com/en-us/intune/intune-service/enrollment/android-samsung-knox-mobile-enroll).
+
+
+[Section titled: End user tasks (Fully managed)](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/deployment-guide-enrollment-android#end-user-tasks-fully-managed)
+
+### End user tasks (Fully managed)
+
+The specific steps depend on how you configured the enrollment profile. For the specific user experience, go to [enroll the device](https://learn.microsoft.com/en-us/intune/intune-service/user-help/enroll-device-android-microsoft-intune-app).
+
+1. Users turn on the device, and are prompted for information, including the enrollment method: NFC, Token, QR Code, or Google Zero Touch. They can be asked to sign in with their organization credentials ( `user@contoso.com`).
+
+2. After they enter the required information, your enrollment profile applies to the device.
+
+Users might have to enter more information. For more specific steps, go to [enroll the device](https://learn.microsoft.com/en-us/intune/intune-service/user-help/enroll-device-android-microsoft-intune-app).
+
+
+Users typically don't like enrolling themselves, and may not be familiar with the Company Portal app. Be sure to provide guidance, including what information to enter. For some guidance on communicating with your users, see [Planning guide: Step 5 - Create a rollout plan](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/intune-planning-guide#step-5---create-a-rollout-plan).
+
+[Section titled: Android Enterprise corporate owned work profile](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/deployment-guide-enrollment-android#android-enterprise-corporate-owned-work-profile)
+
+## Android Enterprise corporate owned work profile
+
+Previously referred to as COPE. These devices are organization-owned, and have one user. They're used for organization work, and allow personal use.
+
+* * *
+
+Expand table
+
+| Feature | Use this enrollment option when |
+| --- | --- |
+| Use Google Mobile Services (GMS). | ✅ |
+| Devices are owned by the organization or school. | ✅ |
+| You have new or existing devices. | ✅ |
+| Need to enroll a few devices, or a large number of devices (bulk enrollment). | ✅ |
+| Devices are associated with a single user. | ✅ |
+| Devices are user-less, such as kiosk, dedicated, or shared. | ❌ <br>User-less devices should be enrolled using Android Enterprise dedicated devices. Also, an organization administrator can enroll. When the device is enrolled, create a [dedicated device](https://learn.microsoft.com/en-us/intune/intune-service/configuration/device-restrictions-android-for-work#device-experience) profile, and assign this profile to this device. |
+| Devices are personal or BYOD. | ❌ <br>BYOD or personal devices should be enrolled using [Android Enterprise personally owned devices with a work profile](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/deployment-guide-enrollment-android#byod-android-enterprise-personally-owned-devices-with-a-work-profile) (in this article). |
+| Devices are managed by another MDM provider. | ❌ <br> To be fully managed by Intune, users need to unenroll from the current MDM provider, and then enroll in Intune. |
+| You use the optional device enrollment manager (DEM) account. | ❌ <br> The DEM account isn't supported. |
+
+* * *
+
+[Section titled: Admin tasks (Corporate owned with a work profile)](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/deployment-guide-enrollment-android#admin-tasks-corporate-owned-with-a-work-profile)
+
+### Admin tasks (Corporate owned with a work profile)
+
+This task list provides an overview. For more specific information, go to [Set up Intune enrollment of Android Enterprise corporate owned work profile](https://learn.microsoft.com/en-us/intune/intune-service/enrollment/android-corporate-owned-work-profile-enroll).
+
+- Be sure your devices are [supported](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/supported-devices-browsers).
+
+- Factory reset the devices. This step is required.
+
+- Connect your Intune organization account to your Managed Google Play account in the [Intune admin center](https://go.microsoft.com/fwlink/?linkid=2109431). When you connect, Intune automatically adds the Company Portal app and other common Android Enterprise apps to the devices. For the specific steps, go to [Connect your Intune account to your Managed Google Play account](https://learn.microsoft.com/en-us/intune/intune-service/enrollment/connect-intune-android-enterprise).
+
+- Enable corporate-owned personal profile devices in the [Intune admin center](https://go.microsoft.com/fwlink/?linkid=2109431). For the specific steps, go to [Set up Intune enrollment of Android Enterprise corporate-owned devices with work profile](https://learn.microsoft.com/en-us/intune/intune-service/enrollment/android-corporate-owned-work-profile-enroll).
+
+- Enroll the devices in Intune. For the specific steps, go to [Enroll your Android Enterprise devices](https://learn.microsoft.com/en-us/intune/intune-service/enrollment/android-dedicated-devices-fully-managed-enroll).
+
+- Communicate to your users how they should enroll: Near Field Communication (NFC), Token, QR Code, Google Zero Touch, or Samsung Knox Mobile Enrollment (KME).
+
+Using Samsung Knox Mobile Enrollment (KME), you can automatically enroll a large number of Android Enterprise Samsung's Knox devices. For more information, go to [Automatically enroll Android devices by using Samsung's Knox Mobile Enrollment](https://learn.microsoft.com/en-us/intune/intune-service/enrollment/android-samsung-knox-mobile-enroll).
+
+
+[Section titled: End user tasks (Corporate owned with a work profile)](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/deployment-guide-enrollment-android#end-user-tasks-corporate-owned-with-a-work-profile)
+
+### End user tasks (Corporate owned with a work profile)
+
+The specific steps depend on how you configured the enrollment profile. For the specific user experience, go to [enroll the device](https://learn.microsoft.com/en-us/intune/intune-service/user-help/enroll-device-android-microsoft-intune-app).
+
+1. Users turn on the device, and are prompted for information, including the enrollment method: NFC, Token, QR Code, or Google Zero Touch. They can be asked to sign in with their organization credentials ( `user@contoso.com`).
+
+2. After they enter the required information, your enrollment profile applies to the device.
+
+Users might have to enter more information. For more specific steps, go to [enroll the device](https://learn.microsoft.com/en-us/intune/intune-service/user-help/enroll-device-android-microsoft-intune-app).
+
+
+Users typically don't like enrolling themselves, and may not be familiar with the Company Portal app. Be sure to provide guidance, including what information to enter. For some guidance on communicating with your users, see [Planning guide: Step 5 - Create a rollout plan](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/intune-planning-guide#step-5---create-a-rollout-plan).
+
+[Section titled: Android Open Source Project (AOSP)](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/deployment-guide-enrollment-android#android-open-source-project-aosp)
+
+## Android Open Source Project (AOSP)
+
+Note
+
+Currently, there's limited OEM support for this enrollment method.
+
+Also referred to as AOSP. These devices are organization-owned, and don't use Google Mobile Services (GMS). They can be kiosk-style devices that aren't associated with a single or specific user, or can have one user. They're used exclusively for organization work; not personal use.
+
+When you create the Intune enrollment profile, you decide if the devices are userless, or are associated with a single user. For more information on these options, including supported OEMs, go to:
+
+- [Set up Intune enrollment for Android (AOSP) corporate-owned userless devices](https://learn.microsoft.com/en-us/intune/intune-service/enrollment/android-aosp-corporate-owned-userless-enroll)
+- [Set up Intune enrollment for Android (AOSP) corporate-owned user-associated devices](https://learn.microsoft.com/en-us/intune/intune-service/enrollment/android-aosp-corporate-owned-user-associated-enroll)
+
+* * *
+
+Expand table
+
+| Feature | Use this enrollment option when |
+| --- | --- |
+| Use Google Mobile Services (GMS). | ❌ <br> These devices don't support [GMS](https://www.android.com/gms/) (opens Android's web site). Some countries/regions don't support GMS. <br> If your devices will use GMS, then use [dedicated devices](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/deployment-guide-enrollment-android#android-enterprise-dedicated-devices) (in this article) or [fully managed](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/deployment-guide-enrollment-android#android-enterprise-fully-managed) (in this article) enrollment. |
+| Devices are owned by the organization or school. | ✅ |
+| You have new or existing devices. | ✅ |
+| Need to enroll a few devices, or a large number of devices (bulk enrollment). | ❌ <br> Can only enroll one device at a time. |
+| Devices are associated with a single user. | ✅ |
+| Devices are user-less, such as kiosk, dedicated, or shared. | ✅ |
+| Devices are personal or BYOD. | ❌ <br>[Android Enterprise personally owned devices with a work profile](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/deployment-guide-enrollment-android#byod-android-enterprise-personally-owned-devices-with-a-work-profile) (in this article) support [GMS](https://www.android.com/gms/) (opens Android's web site). |
+| Devices are managed by another MDM provider. | ❌ <br> To be fully managed by Intune, users need to unenroll from the current MDM provider, and then enroll in Intune. |
+| You use the optional device enrollment manager (DEM) account | ❌ <br> The DEM account isn't supported. |
+
+* * *
+
+[Section titled: Admin tasks (AOSP)](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/deployment-guide-enrollment-android#admin-tasks-aosp)
+
+### Admin tasks (AOSP)
+
+This task list provides an overview. For more specific information, go to enrollment for [AOSP corporate-owned userless devices](https://learn.microsoft.com/en-us/intune/intune-service/enrollment/android-aosp-corporate-owned-userless-enroll) and [AOSP corporate-owned user-associated devices](https://learn.microsoft.com/en-us/intune/intune-service/enrollment/android-aosp-corporate-owned-user-associated-enroll).
+
+- Be sure your devices are [supported](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/supported-devices-browsers).
+
+- Factory reset the devices. This step is required. New devices might not require a factory reset.
+
+- Create an enrollment profile in the [Intune admin center](https://go.microsoft.com/fwlink/?linkid=2109431), and have your device groups ready. For the specific steps, go to:
+
+  - [AOSP corporate-owned userless devices](https://learn.microsoft.com/en-us/intune/intune-service/enrollment/android-aosp-corporate-owned-userless-enroll)
+  - [AOSP corporate-owned user-associated devices](https://learn.microsoft.com/en-us/intune/intune-service/enrollment/android-aosp-corporate-owned-user-associated-enroll)
+- Enroll the devices in Intune. For the specific steps, go to:
+
+
+  - [AOSP corporate-owned userless devices](https://learn.microsoft.com/en-us/intune/intune-service/enrollment/android-aosp-corporate-owned-userless-enroll)
+  - [AOSP corporate-owned user-associated devices](https://learn.microsoft.com/en-us/intune/intune-service/enrollment/android-aosp-corporate-owned-user-associated-enroll)
+
+During enrollment, the Microsoft Intune app and Microsoft Authenticator app automatically install and open on the device, which allows the device to enroll. The device is locked in the enrollment process until enrollment completes.
+
+[Section titled: End user tasks (AOSP)](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/deployment-guide-enrollment-android#end-user-tasks-aosp)
+
+### End user tasks (AOSP)
+
+The specific steps depend on how you configured the enrollment profile.
+
+Admins can complete the enrollment themselves, and then give the devices to the users. Or, users can enroll the devices using the following steps:
+
+1. Users turn on the device, and are prompted for information, including the enrollment method: QR Code. If you created a user-associated devices enrollment profile, then they might be asked to sign in with their organization credentials ( `user@contoso.com`).
+
+2. If you created a userless devices enrollment profile, then wait for the enrollment wizard to complete. When it does, the device is ready to use.
+
+If you created a user-associated devices enrollment profile, then users enter the required information. Then, wait for the enrollment wizard to complete. For more specific steps, go to [enroll the device](https://learn.microsoft.com/en-us/intune/intune-service/user-help/enroll-device-android-microsoft-intune-app).
+
+
+Users typically don't like enrolling themselves, and may not be familiar with the Company Portal app. Be sure to provide guidance, including what information to enter. For some guidance on communicating with your users, see [Planning guide: Step 5 - Create a rollout plan](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/intune-planning-guide#step-5---create-a-rollout-plan).
+
+[Section titled: Android device administrator](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/deployment-guide-enrollment-android#android-device-administrator)
+
+## Android device administrator
+
+Important
+
+Android device administrator management is deprecated and no longer available for devices with access to Google Mobile Services (GMS). If you currently use device administrator management, we recommend switching to another Android management option. Support and help documentation remain available for some devices without GMS, running Android 15 and earlier. For more information, see [Ending support for Android device administrator on GMS devices](https://techcommunity.microsoft.com/t5/intune-customer-success/microsoft-intune-ending-support-for-android-device-administrator/ba-p/3915443).
+
+These Android devices are corporate, or personal/BYOD (bring your own device) devices that can access organization email, apps, and other data.
+
+[Google deprecated Android device administrator management](https://blog.google/products/android-enterprise/da-migration/) in 2020. Intune is ending support for device administrator devices with access to Google Mobile Services in August 2024.
+
+Microsoft recommends:
+
+- Don't enroll new devices using Android device administrator.
+
+- Enroll new devices using one of the other methods described in this article and/or using [App protection policies](https://learn.microsoft.com/en-us/intune/intune-service/apps/app-protection-policy).
+
+- Move existing Android device administrator devices to one of the other methods described in this article. If you're moving them to [Android Enterprise personally owned devices with a work profile](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/deployment-guide-enrollment-android#byod-android-enterprise-personally-owned-devices-with-a-work-profile) (in this article), consider using the streamlined flow to move [Android devices from device administrator to personally owned work profile management](https://learn.microsoft.com/en-us/intune/intune-service/enrollment/android-move-device-admin-work-profile).
+
+- Create a device enrollment restriction to block device administrator enrollment. Android devices can try to enroll using device administrator before trying other enrollment methods. So, create the restriction to prevent this behavior. For more information, go to [Set enrollment restrictions](https://learn.microsoft.com/en-us/intune/intune-service/enrollment/enrollment-restrictions-set).
+
+
+[Section titled: Related articles](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/deployment-guide-enrollment-android#related-articles)
+
+## Related articles
+
+- [MAM](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/deployment-guide-enrollment-mamwe)
+- [iOS/iPadOS enrollment guide](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/deployment-guide-enrollment-ios-ipados)
+- [Linux enrollment guide](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/deployment-guide-enrollment-linux)
+- [macOS enrollment guide](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/deployment-guide-enrollment-macos)
+- [Windows enrollment guide](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/deployment-guide-enrollment-windows)
+
+* * *
+
+## Feedback
+
+Was this page helpful?
+
+
+YesNo
+
+* * *
+
+## Additional resources
+
+* * *
+
+Training
+
+
+Learning path
+
+
+[MD-101 Implement device enrollment - Training](https://learn.microsoft.com/en-us/training/paths/implement-device-enrollment/?source=recommendations)
+
+MD-101 Implement device enrollment
+
+
+Certification
+
+
+[Microsoft 365 Certified: Endpoint Administrator Associate - Certifications](https://learn.microsoft.com/en-us/credentials/certifications/modern-desktop/?source=recommendations)
+
+Plan and execute an endpoint deployment strategy, using essential elements of modern management, co-management approaches, and Microsoft Intune integration.
+
+
+Please sign in to use this experience.
+
+[Sign in](https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/deployment-guide-enrollment-android#)

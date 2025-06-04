@@ -1,0 +1,15 @@
+Azure Container Registry Crawl
+
+{
+  "url": "https://learn.microsoft.com/en-us/azure/container-registry/",
+  "maxDepth": 2,
+  "limit": 100,
+  "allowExternalLinks": false,
+  "scrapeOptions": {
+    "formats": [
+      "markdown"
+    ],
+    "onlyMainContent": true
+  }
+}
+

@@ -1,0 +1,6 @@
+Azure Compliance Fedramp Map
+
+{
+  "url": "https://learn.microsoft.com/en-us/azure/compliance/offerings/offering-fedramp",
+  "limit": 50
+}

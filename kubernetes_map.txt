@@ -1,0 +1,14 @@
+Kubernetes Map
+
+{
+  "url": "https://kubernetes.io/docs/home/",
+  "limit": 200
+}
+
+https://kubernetes.io/docs/home/supported-doc-versions
+https://v1-32.docs.kubernetes.io/docs/home/supported-doc-versions
+https://v1-32.docs.kubernetes.io/docs/home/contribute/page-templates
+https://v1-32.docs.kubernetes.io/docs/home/contribute/generated-reference/kubernetes-components
+https://v1-32.docs.kubernetes.io/docs/home/contribute/generated-reference/kubernetes-api
+http://kubernetes.io/docs/home/_print
+http://kubernetes.io/docs/home/contribuisci/scrivi-nuovo-argomento

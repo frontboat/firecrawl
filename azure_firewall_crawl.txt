@@ -1,0 +1,15 @@
+Azure Firewall Crawl
+
+{
+  "url": "https://learn.microsoft.com/en-us/azure/firewall/",
+  "maxDepth": 2,
+  "limit": 100,
+  "allowExternalLinks": false,
+  "scrapeOptions": {
+    "formats": [
+      "markdown"
+    ],
+    "onlyMainContent": true
+  }
+}
+

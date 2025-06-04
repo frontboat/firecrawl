@@ -1,0 +1,6 @@
+Nmap Map
+
+{
+  "url": "https://nmap.org/book/man.html",
+  "limit": 50
+}

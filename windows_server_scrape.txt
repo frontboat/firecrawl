@@ -1,0 +1,116 @@
+Windows Server Administration OpenSSH Overview 
+
+{
+  "url": "https://learn.microsoft.com/en-us/windows-server/administration/openssh/openssh-overview",
+  "formats": [
+    "markdown"
+  ],
+  "onlyMainContent": true
+}
+
+Table of contents Exit focus mode
+
+Ask LearnAsk Learn
+
+Table of contents[Read in English](https://learn.microsoft.com/en-us/windows-server/administration/openssh/openssh-overview)Add to CollectionsAdd to plan[Edit](https://github.com/MicrosoftDocs/windowsserverdocs/blob/main/WindowsServerDocs/administration/OpenSSH/openssh-overview.md)
+
+* * *
+
+#### Share via
+
+[Facebook](https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Flearn.microsoft.com%2Fen-us%2Fwindows-server%2Fadministration%2Fopenssh%2Fopenssh-overview%3FWT.mc_id%3Dfacebook) [x.com](https://twitter.com/intent/tweet?original_referer=https%3A%2F%2Flearn.microsoft.com%2Fen-us%2Fwindows-server%2Fadministration%2Fopenssh%2Fopenssh-overview%3FWT.mc_id%3Dtwitter&text=%0A%0D%0Ahttps%3A%2F%2Flearn.microsoft.com%2Fen-us%2Fwindows-server%2Fadministration%2Fopenssh%2Fopenssh-overview%3FWT.mc_id%3Dtwitter&tw_p=tweetbutton&url=https%3A%2F%2Flearn.microsoft.com%2Fen-us%2Fwindows-server%2Fadministration%2Fopenssh%2Fopenssh-overview%3FWT.mc_id%3Dtwitter) [LinkedIn](https://www.linkedin.com/feed/?shareActive=true&text=%0A%0D%0Ahttps%3A%2F%2Flearn.microsoft.com%2Fen-us%2Fwindows-server%2Fadministration%2Fopenssh%2Fopenssh-overview%3FWT.mc_id%3Dlinkedin) [Email](mailto:?subject=%5BShared%20Article%5D%20OpenSSH%20for%20Windows%20overview%20%7C%20Microsoft%20Learn&body=%0A%0D%0Ahttps%3A%2F%2Flearn.microsoft.com%2Fen-us%2Fwindows-server%2Fadministration%2Fopenssh%2Fopenssh-overview%3FWT.mc_id%3Demail)
+
+* * *
+
+Print
+
+* * *
+
+Note
+
+Access to this page requires authorization. You can try [signing in](https://learn.microsoft.com/en-us/windows-server/administration/openssh/openssh-overview#) or changing directories.
+
+
+Access to this page requires authorization. You can try changing directories.
+
+
+# OpenSSH for Windows overview
+
+- 02/20/2025
+- Applies to: ✅ [Windows Server 2025](https://learn.microsoft.com/windows-server/get-started/windows-server-release-info), ✅ [Windows Server 2022](https://learn.microsoft.com/windows-server/get-started/windows-server-release-info), ✅ [Windows Server 2019](https://learn.microsoft.com/windows-server/get-started/windows-server-release-info), ✅ [Windows 11](https://learn.microsoft.com/windows/release-health/supported-versions-windows-client), ✅ [Windows 10](https://learn.microsoft.com/windows/release-health/supported-versions-windows-client)
+
+Feedback
+
+OpenSSH is the open-source version of the Secure Shell (SSH) tools used by administrators of Linux and other non-Windows for cross-platform management of remote systems. Beginning with Windows 10 build 1809 and Windows Server 2019, OpenSSH is available as a feature on demand.
+
+SSH is based on a client-server architecture where the system the user is working on is the client and the remote system being managed is the server. OpenSSH includes a range of components and tools designed to provide a secure and straightforward approach to remote system administration.
+
+The following table lists the default install state of OpenSSH for Windows on different Windows releases.
+
+Expand table
+
+| Windows release | SSH install state |
+| --- | --- |
+| Windows Server 2019 | Not installed, install and enable using optional features |
+| Windows Server 2022 | Not installed, install and enable using optional features |
+| Windows Server 2025 | Installed but not enabled |
+| Windows 10 build 1809 + | Not installed, install and enable using optional features |
+
+OpenSSH for Windows has the following commands built in.
+
+- `ssh` is the SSH client component that runs on the user's local system
+- `sshd` is the SSH server component that must be running on the system being managed remotely
+- `ssh-keygen` generates, manages and converts authentication keys for SSH
+- `ssh-agent` stores private keys used for public key authentication
+- `ssh-add` adds private keys to the list allowed by the server
+- `ssh-keyscan` aids in collecting the public SSH host keys from hosts
+- `sftp` is the service that provides the Secure File Transfer Protocol, and runs over SSH
+- `scp` is a file copy utility that runs on SSH
+
+Tip
+
+The documentation focuses on how OpenSSH is used on Windows, including installation, and
+Windows-specific configuration, commands, and use cases. Additional detailed documentation for
+common OpenSSH features is available online at
+[OpenSSH.com](https://www.openssh.com/manual.html).
+
+Feedback on Windows OpenSSH is welcomed and can be provided by creating GitHub issues in our [OpenSSH GitHub repo](https://github.com/PowerShell/openssh-portable). The [OpenSSH open source project](https://www.openssh.com/) is managed by developers at the OpenBSD Project. The Microsoft fork of this project is in [GitHub](https://github.com/PowerShell/openssh-portable).
+
+[Section titled: Next steps](https://learn.microsoft.com/en-us/windows-server/administration/openssh/openssh-overview#next-steps)
+
+## Next steps
+
+- [Get started with OpenSSH](https://learn.microsoft.com/en-us/windows-server/administration/openssh/openssh_install_firstuse)
+
+* * *
+
+## Feedback
+
+Was this page helpful?
+
+
+YesNo
+
+* * *
+
+## Additional resources
+
+* * *
+
+Training
+
+
+Module
+
+
+[Develop on a remote machine using SSH with Visual Studio Code - Training](https://learn.microsoft.com/en-us/training/modules/develop-on-remote-machine/?source=recommendations)
+
+In this module, you'll learn how to seamlessly develop on a remote machine using the Visual Studio Code Remote - SSH extension. We'll explore how to run and debug code located on a remote machine, while locally using Visual Studio Code's full feature set.
+
+
+Certification
+
+
+[Microsoft Certified: Windows Server Hybrid Administrator Associate - Certifications](https://learn.microsoft.com/en-us/credentials/certifications/windows-server-hybrid-administrator/?source=recommendations)
+
+As a Windows Server hybrid administrator, you integrate Windows Server environments with Azure services and manage Windows Server in on-premises networks.

@@ -1,0 +1,12 @@
+# https://learn.microsoft.com/en-us/azure/aks/ llms.txt
+
+- [Draft for AKS](https://learn.microsoft.com/en-us/azure/aks/draft): Streamline Kubernetes development with Draft for AKS deployment.
+- [Connect to AKS Nodes](https://learn.microsoft.com/en-us/azure/aks/rdp?tabs=azure-cli): Learn how to connect to AKS Windows Server nodes via RDP.
+- [AKS FAQ](https://learn.microsoft.com/en-us/azure/aks/faq): Find answers to common Azure Kubernetes Service questions.
+- [Dapr Extension Installation](https://learn.microsoft.com/en-us/azure/aks/dapr?tabs=cli): Learn to install Dapr extension for Azure Kubernetes Service.
+- [Azure Kubernetes Service](https://learn.microsoft.com/en-us/azure/aks/aksarc/): Explore Azure Kubernetes Service with Azure Arc integration.
+- [Upgrade Azure Kubernetes Service](https://learn.microsoft.com/en-us/azure/aks/upgrade): Learn how to upgrade Azure Kubernetes Service clusters effectively.
+- [Deploy wasmCloud on AKS](https://learn.microsoft.com/en-us/azure/aks/wasmcloud): Deploy wasmCloud on Azure Kubernetes Service for WebAssembly workloads.
+- [AKS Integrations Overview](https://learn.microsoft.com/en-us/azure/aks/integrations): Explore add-ons, extensions, and integrations for Azure Kubernetes Service.
+- [Deploy OpenFaaS on AKS](https://learn.microsoft.com/en-us/azure/aks/openfaas): Learn to deploy OpenFaaS on Azure Kubernetes Service effectively.
+- [AKS Edge Essentials Overview](https://learn.microsoft.com/en-us/azure/aks/aksarc/aks-edge-overview): Overview of AKS Edge Essentials for on-premises Kubernetes deployment. 
