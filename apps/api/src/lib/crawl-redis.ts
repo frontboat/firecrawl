@@ -26,6 +26,13 @@ export async function saveCrawl(id: string, crawl: StoredCrawl) {
   });
   await redisEvictConnection.set("crawl:" + id, JSON.stringify(crawl));
   await redisEvictConnection.expire("crawl:" + id, 24 * 60 * 60);
+
+  await redisEvictConnection.sadd("crawls_by_team_id:" + crawl.team_id, id);
+  await redisEvictConnection.expire("crawls_by_team_id:" + crawl.team_id, 24 * 60 * 60);
+}
+
+export async function getCrawlsByTeamId(team_id: string): Promise<string[]> {
+  return await redisEvictConnection.smembers("crawls_by_team_id:" + team_id);
 }
 
 export async function getCrawl(id: string): Promise<StoredCrawl | null> {
@@ -166,14 +173,12 @@ export async function finishCrawlPre(id: string) {
 }
 
 export async function unPreFinishCrawl(id: string) {
-  if (await isCrawlFinished(id)) {
-    _logger.debug("Un-pre-finishing crawl.", {
-      module: "crawl-redis",
-      method: "unPreFinishCrawl",
-      crawlId: id,
-    });
-    await redisEvictConnection.del("crawl:" + id + ":finished_pre");
-  }
+  _logger.debug("Un-pre-finishing crawl.", {
+    module: "crawl-redis",
+    method: "unPreFinishCrawl",
+    crawlId: id,
+  });
+  await redisEvictConnection.del("crawl:" + id + ":finished_pre");
 }
 
 export async function finishCrawl(id: string) {
@@ -184,6 +189,12 @@ export async function finishCrawl(id: string) {
   });
   await redisEvictConnection.set("crawl:" + id + ":finish", "yes");
   await redisEvictConnection.expire("crawl:" + id + ":finish", 24 * 60 * 60);
+  
+  const crawl = await getCrawl(id);
+  if (crawl && crawl.team_id) {
+    await redisEvictConnection.srem("crawls_by_team_id:" + crawl.team_id, id);
+    await redisEvictConnection.expire("crawls_by_team_id:" + crawl.team_id, 24 * 60 * 60);
+  }
 }
 
 export async function getCrawlJobs(id: string): Promise<string[]> {

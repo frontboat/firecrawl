@@ -10,6 +10,14 @@ export async function sendDocumentToIndex(meta: Meta, document: Document) {
         && meta.winnerEngine !== "cache"
         && meta.winnerEngine !== "index"
         && meta.winnerEngine !== "index;documents"
+        && (
+            meta.internalOptions.teamId === "sitemap"
+            || (
+                meta.winnerEngine !== "fire-engine;tlsclient"
+                && meta.winnerEngine !== "fire-engine;tlsclient;stealth"
+                && meta.winnerEngine !== "fetch"
+            )
+        )
         && !meta.featureFlags.has("actions")
         && (
             meta.options.headers === undefined
@@ -51,8 +59,6 @@ export async function sendDocumentToIndex(meta: Meta, document: Document) {
                     id: indexId,
                     url: normalizedURL,
                     url_hash: urlHash,
-                    url_splits: urlSplits,
-                    url_splits_hash: urlSplitsHash,
                     original_url: document.metadata.sourceURL ?? meta.url,
                     resolved_url: document.metadata.url ?? document.metadata.sourceURL ?? meta.url,
                     has_screenshot: document.screenshot !== undefined && meta.featureFlags.has("screenshot"),
@@ -116,7 +122,7 @@ export async function scrapeURLWithIndex(meta: Meta): Promise<EngineScrapeResult
     const { data, error } = await selector
         .order("created_at", { ascending: false })
         .limit(5);
-    
+
     if (error) {
         throw new EngineError("Failed to retrieve URL from DB index", {
             cause: error,
@@ -145,7 +151,7 @@ export async function scrapeURLWithIndex(meta: Meta): Promise<EngineScrapeResult
 
     const id = data[0].id;
 
-    const doc = await getIndexFromGCS(id + ".json");
+    const doc = await getIndexFromGCS(id + ".json", meta.logger.child({ module: "index", method: "getIndexFromGCS" }));
     if (!doc) {
         throw new EngineError("Document not found in GCS");
     }
