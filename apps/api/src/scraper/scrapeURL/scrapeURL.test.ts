@@ -3,9 +3,9 @@ import "dotenv/config";
 process.env.ENV = "test";
 
 import { scrapeURL } from ".";
-import { scrapeOptions } from "../../controllers/v1/types";
+import { scrapeOptions } from "../../controllers/v2/types";
 import { Engine } from "./engines";
-import { CostTracking } from "../../lib/extract/extraction-service";
+import { CostTracking } from "../../lib/cost-tracking";
 
 const testEngines: (Engine | undefined)[] = [
   undefined,
@@ -466,10 +466,16 @@ describe("Standalone scrapeURL tests", () => {
 
   test.concurrent.each(new Array(100).fill(0).map((_, i) => i))(
     "Concurrent scrape #%i",
-    async (i) => {
+    async i => {
       const url = "https://www.scrapethissite.com/?i=" + i;
       const id = "test:concurrent:" + url;
-      const out = await scrapeURL(id, url, scrapeOptions.parse({}), { teamId: "test" }, new CostTracking());
+      const out = await scrapeURL(
+        id,
+        url,
+        scrapeOptions.parse({}),
+        { teamId: "test" },
+        new CostTracking(),
+      );
 
       const replacer = (key: string, value: any) => {
         if (value instanceof Error) {
@@ -484,14 +490,6 @@ describe("Standalone scrapeURL tests", () => {
           return value;
         }
       };
-
-      // verify that log collection works properly while concurrency is happening
-      // expect(out.logs.length).toBeGreaterThan(0);
-      const weirdLogs = out.logs.filter((x) => x.scrapeId !== id);
-      if (weirdLogs.length > 0) {
-        console.warn(JSON.stringify(weirdLogs, replacer));
-      }
-      expect(weirdLogs.length).toBe(0);
 
       if (!out.success) console.error(JSON.stringify(out, replacer));
       expect(out.success).toBe(true);

@@ -12,13 +12,20 @@ import {
   PDFInsufficientTimeError,
   PDFPrefetchFailed,
   RemoveFeatureError,
-  TimeoutError,
 } from "../../error";
 import { readFile, unlink } from "node:fs/promises";
 import path from "node:path";
 import type { Response } from "undici";
-import { getPageCount } from "../../../../lib/pdf-parser";
-import { getPdfResultFromCache, savePdfResultToCache } from "../../../../lib/gcs-pdf-cache";
+import {
+  getPdfResultFromCache,
+  savePdfResultToCache,
+} from "../../../../lib/gcs-pdf-cache";
+import { AbortManagerThrownError } from "../../lib/abortManager";
+import {
+  shouldParsePDF,
+  getPDFMaxPages,
+} from "../../../../controllers/v2/types";
+import { getPdfMetadata } from "@mendable/firecrawl-rs";
 
 type PDFProcessorResult = { html: string; markdown?: string };
 
@@ -28,42 +35,40 @@ const MILLISECONDS_PER_PAGE = 150;
 async function scrapePDFWithRunPodMU(
   meta: Meta,
   tempFilePath: string,
-  timeToRun: number | undefined,
   base64Content: string,
+  maxPages?: number,
 ): Promise<PDFProcessorResult> {
   meta.logger.debug("Processing PDF document with RunPod MU", {
     tempFilePath,
   });
 
-  const preCacheCheckStartTime = Date.now();
-
-  try {
-    const cachedResult = await getPdfResultFromCache(base64Content);
-    if (cachedResult) {
-      meta.logger.info("Using cached RunPod MU result for PDF", {
+  if (!maxPages) {
+    try {
+      const cachedResult = await getPdfResultFromCache(base64Content);
+      if (cachedResult) {
+        meta.logger.info("Using cached RunPod MU result for PDF", {
+          tempFilePath,
+        });
+        return cachedResult;
+      }
+    } catch (error) {
+      meta.logger.warn("Error checking PDF cache, proceeding with RunPod MU", {
+        error,
         tempFilePath,
       });
-      return cachedResult;
     }
-  } catch (error) {
-    meta.logger.warn("Error checking PDF cache, proceeding with RunPod MU", {
-      error,
-      tempFilePath,
-    });
   }
 
-  const timeout = timeToRun
-    ? timeToRun - (Date.now() - preCacheCheckStartTime)
-    : undefined;
-  if (timeout && timeout < 0) {
-    throw new TimeoutError("MU PDF parser already timed out before call");
-  }
+  meta.abort.throwIfAborted();
 
-  const abort = timeout ? AbortSignal.timeout(timeout) : undefined;
+  meta.logger.info("Max Pdf pages", {
+    tempFilePath,
+    maxPages,
+  });
 
   const podStart = await robustFetch({
     url:
-      "https://api.runpod.ai/v2/" + process.env.RUNPOD_MUV2_POD_ID + "/runsync",
+      "https://api.runpod.ai/v2/" + process.env.RUNPOD_MU_POD_ID + "/runsync",
     method: "POST",
     headers: {
       Authorization: `Bearer ${process.env.RUNPOD_MU_API_KEY}`,
@@ -72,8 +77,9 @@ async function scrapePDFWithRunPodMU(
       input: {
         file_content: base64Content,
         filename: path.basename(tempFilePath) + ".pdf",
-        timeout,
+        timeout: meta.abort.scrapeTimeout(),
         created_at: Date.now(),
+        ...(maxPages !== undefined && { max_pages: maxPages }),
       },
     },
     logger: meta.logger.child({
@@ -89,19 +95,17 @@ async function scrapePDFWithRunPodMU(
         .optional(),
     }),
     mock: meta.mock,
-    abort,
+    abort: meta.abort.asSignal(),
   });
-
-
 
   let status: string = podStart.status;
   let result: { markdown: string } | undefined = podStart.output;
 
   if (status === "IN_QUEUE" || status === "IN_PROGRESS") {
     do {
-      abort?.throwIfAborted();
-      await new Promise((resolve) => setTimeout(resolve, 2500));
-      abort?.throwIfAborted();
+      meta.abort.throwIfAborted();
+      await new Promise(resolve => setTimeout(resolve, 2500));
+      meta.abort.throwIfAborted();
       const podStatus = await robustFetch({
         url: `https://api.runpod.ai/v2/${process.env.RUNPOD_MU_POD_ID}/status/${podStart.id}`,
         method: "GET",
@@ -120,7 +124,7 @@ async function scrapePDFWithRunPodMU(
             .optional(),
         }),
         mock: meta.mock,
-        abort,
+        abort: meta.abort.asSignal(),
       });
       status = podStatus.status;
       result = podStatus.output;
@@ -169,13 +173,11 @@ async function scrapePDFWithParsePDF(
   };
 }
 
-export async function scrapePDF(
-  meta: Meta,
-  timeToRun: number | undefined,
-): Promise<EngineScrapeResult> {
-  const startTime = Date.now();
+export async function scrapePDF(meta: Meta): Promise<EngineScrapeResult> {
+  const shouldParse = shouldParsePDF(meta.options.parsers);
+  const maxPages = getPDFMaxPages(meta.options.parsers);
 
-  if (!meta.options.parsePDF) {
+  if (!shouldParse) {
     if (meta.pdfPrefetch !== undefined && meta.pdfPrefetch !== null) {
       const content = (await readFile(meta.pdfPrefetch.filePath)).toString(
         "base64",
@@ -238,11 +240,18 @@ export async function scrapePDF(
     }
   }
 
-  const pageCount = await getPageCount(tempFilePath);
-  if (pageCount * MILLISECONDS_PER_PAGE > (timeToRun ?? Infinity)) {
+  const pdfMetadata = await getPdfMetadata(tempFilePath);
+  const effectivePageCount = maxPages
+    ? Math.min(pdfMetadata.numPages, maxPages)
+    : pdfMetadata.numPages;
+
+  if (
+    effectivePageCount * MILLISECONDS_PER_PAGE >
+    (meta.abort.scrapeTimeout() ?? Infinity)
+  ) {
     throw new PDFInsufficientTimeError(
-      pageCount,
-      pageCount * MILLISECONDS_PER_PAGE + 5000,
+      effectivePageCount,
+      effectivePageCount * MILLISECONDS_PER_PAGE + 5000,
     );
   }
 
@@ -265,26 +274,15 @@ export async function scrapePDF(
           }),
         },
         tempFilePath,
-        timeToRun ? timeToRun - (Date.now() - startTime) : undefined,
         base64Content,
+        maxPages,
       );
     } catch (error) {
       if (
         error instanceof RemoveFeatureError ||
-        error instanceof TimeoutError
+        error instanceof AbortManagerThrownError
       ) {
         throw error;
-      } else if (
-        (error instanceof Error && error.name === "TimeoutError") ||
-        (error instanceof Error &&
-          error.message === "Request failed" &&
-          error.cause &&
-          error.cause instanceof Error &&
-          error.cause.name === "TimeoutError")
-      ) {
-        throw new TimeoutError(
-          "PDF parsing timed out, please increase the timeout parameter in your scrape request",
-        );
       }
       meta.logger.warn(
         "RunPod MU failed to parse PDF (could be due to timeout) -- falling back to parse-pdf",
@@ -314,8 +312,17 @@ export async function scrapePDF(
     statusCode: response.status,
     html: result?.html ?? "",
     markdown: result?.markdown ?? "",
-    numPages: pageCount,
+    pdfMetadata: {
+      // Rust parser gets the metadata incorrectly, so we overwrite the page count here with the effective page count
+      // TODO: fix this later
+      numPages: effectivePageCount,
+      title: pdfMetadata.title,
+    },
 
     proxyUsed: "basic",
   };
+}
+
+export function pdfMaxReasonableTime(meta: Meta): number {
+  return 120000; // Infinity, really
 }
